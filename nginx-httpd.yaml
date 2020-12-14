@@ -1,0 +1,11 @@
+---
+  - name: "Setup LAMP on RedHat & Debian"
+    hosts: all
+    become: true
+    tasks:
+
+      - include_tasks: lamp-amazon.yaml
+        when: ansible_os_family == "RedHat"
+
+      - include_tasks: nginx-ubuntu.yaml
+        when: ansible_os_family == "Debian"  

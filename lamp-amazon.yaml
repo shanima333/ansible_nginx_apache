@@ -1,0 +1,25 @@
+---
+
+ - name: "RedHat- Install LAMP service"
+   yum:
+     name: 
+       - httpd
+       - php
+       - mariadb-server
+       - php-mysql
+     state: present  
+
+ - name: "Create index file"
+   copy:
+     content: "<?php phpinfo(); ?>"
+     dest: /var/www/html/index.php
+
+ - name: "RedHat- Restart services"
+   service:
+     name: "{{ item }}"
+     state: restarted
+     enabled: true
+   with_items: 
+     - httpd
+     - mariadb  
+

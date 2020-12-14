@@ -1,0 +1,35 @@
+---
+
+ - name: "Upgrade all apt packages"
+   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+ - name: "Debian - install Nginx , php & mysql service"
+   apt:
+     name:
+         - nginx
+         - php
+         - php-fpm  
+         - mariadb-server
+         - php-mysql
+     state: present
+
+ - name: "copy nginx default file"
+   copy: 
+     src: default
+     dest: /etc/nginx/sites-available/
+
+ - name: "Copy indxe.php  file contents"
+   copy:
+     content: "<?php phpinfo(); ?>"
+     dest: /var/www/html/index.php
+ 
+ - name: "Restart services"
+   service:
+     name: "{{ item }}"
+     state: restarted
+     enabled: true
+   with_items:
+       - nginx
+       - mariadb
+   
+
